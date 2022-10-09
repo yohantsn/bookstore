@@ -72,7 +72,6 @@ class _HomeViewState extends State<HomeView> {
             ),
             builderDelegate: PagedChildBuilderDelegate<BookModel>(
               itemBuilder: (context, item, index) => HomeItemListing(
-                key: Key("home_item_listing_$index"),
                 imageSrc: item.volumeInfo?.imageLinks?.thumbnail ?? "",
                 subTitle: item.volumeInfo?.authors ?? "",
                 title: item.volumeInfo?.title ?? "",

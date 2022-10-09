@@ -57,6 +57,7 @@ class HomeHeader extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(35, 0, 35, 20),
               child: TextField(
+                key: const Key("home_header_field"),
                 onSubmitted: onSubmitted,
                 onChanged: onChanged,
                 textAlignVertical: TextAlignVertical.center,
