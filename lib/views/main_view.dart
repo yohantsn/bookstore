@@ -1,6 +1,5 @@
-import 'package:bookstore/views/favorites_view.dart';
-import 'package:bookstore/views/home_view.dart';
-import 'package:bookstore/views/widgets/scaffold_default.dart';
+import 'package:bookstore/controllers/controllers.dart';
+import 'package:bookstore/views/views.dart';
 import 'package:flutter/material.dart';
 
 class MainView extends StatefulWidget {
@@ -13,12 +12,16 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
-    return const ScaffoldDefault(
+    return ScaffoldDefault(
       title: "",
       hasAppBar: false,
       bodyItems: [
-        HomeView(),
-        FavoritesView(),
+        HomeView(
+          controller: HomeController(),
+        ),
+        FavoritesView(
+          controller: FavoritesController(),
+        ),
       ],
     );
   }

@@ -1,14 +1,18 @@
-import 'package:bookstore/data/models/book_model.dart';
-import 'package:bookstore/tools/strings_util.dart';
-import 'package:bookstore/views/widgets/image_network_default.dart';
-import 'package:bookstore/views/widgets/scaffold_default.dart';
-import 'package:bookstore/views/widgets/text_default.dart';
+import 'package:bookstore/controllers/controllers.dart';
+import 'package:bookstore/data/models/models.dart';
+import 'package:bookstore/tools/tools.dart';
 import 'package:flutter/material.dart';
+import 'package:bookstore/views/widgets/widgets.dart';
 
 class BookDetailsView extends StatefulWidget {
+  final IDetailsController controller;
   final BookModel book;
 
-  const BookDetailsView({Key? key, required this.book}) : super(key: key);
+  const BookDetailsView({
+    Key? key,
+    required this.book,
+    required this.controller,
+  }) : super(key: key);
 
   @override
   State<BookDetailsView> createState() => _BookDetailsViewState();
@@ -85,8 +89,12 @@ class _BookDetailsViewState extends State<BookDetailsView> {
             child: MaterialButton(
               minWidth: 350,
               height: 50,
-              onPressed: () {},
+              onPressed: widget.book.saleInfo?.buyLink != null
+                  ? () => widget.controller.openSelfLink(widget.book.saleInfo?.buyLink ?? "")
+                  : null,
               color: Theme.of(context).primaryColor,
+              disabledColor: Colors.grey.withOpacity(0.3),
+              elevation: 1,
               child: TextDefault(
                 text: StringUtil.detailsButtonBuy,
                 size: TextSize.medium,

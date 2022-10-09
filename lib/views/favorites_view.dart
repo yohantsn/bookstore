@@ -1,24 +1,21 @@
-import 'package:bookstore/controllers/favorites_controller.dart';
-import 'package:bookstore/tools/strings_util.dart';
-import 'package:bookstore/views/book_details_view.dart';
-import 'package:bookstore/views/widgets/favorites/favorite_item_listing.dart';
-
-import 'package:bookstore/views/widgets/text_default.dart';
+import 'package:bookstore/controllers/controllers.dart';
+import 'package:bookstore/data/models/models.dart';
+import 'package:bookstore/tools/tools.dart';
+import 'package:bookstore/views/views.dart';
 import 'package:flutter/material.dart';
 
 class FavoritesView extends StatefulWidget {
-  const FavoritesView({Key? key}) : super(key: key);
+  final IFavoritesController controller;
+  const FavoritesView({Key? key, required this.controller}) : super(key: key);
 
   @override
   State<FavoritesView> createState() => _FavoritesViewState();
 }
 
 class _FavoritesViewState extends State<FavoritesView> {
-  final controller = FavoritesController();
-
   @override
   void initState() {
-    controller.getBooks();
+    widget.controller.getBooks();
     super.initState();
   }
 
@@ -47,37 +44,58 @@ class _FavoritesViewState extends State<FavoritesView> {
         ),
         Expanded(
             child: AnimatedBuilder(
-          animation: controller,
+          animation: widget.controller,
           builder: (context, child) {
-            if (controller.isLoading) {
+            final books = widget.controller.listBooks;
+            if (widget.controller.isLoading) {
               return const Center(
                 child: CircularProgressIndicator.adaptive(),
               );
             }
-            return ListView.builder(
-                padding: const EdgeInsets.all(24),
-                itemCount: controller.listBooks.length,
-                itemBuilder: (context, index) {
-                  final book = controller.listBooks[index];
-                  return FavoriteItemListing(
-                    imageSrc: book.volumeInfo?.imageLinks?.thumbnail ?? "",
-                    subTitle: book.volumeInfo?.authors ?? "",
-                    title: book.volumeInfo?.title ?? "",
-                    isFavorite: true,
-                    onFavoriteTap: () => controller.removeFavorite(index),
-                    onItemTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookDetailsView(
-                          book: book,
-                        ),
-                      ),
-                    ),
-                  );
-                });
+            if (widget.controller.listBooks.isEmpty) {
+              return Center(
+                child: TextDefault(
+                  text: StringUtil.favoriteListEmpty,
+                ),
+              );
+            }
+
+            return ListView(
+              padding: const EdgeInsets.all(12),
+              children: books.map((book) {
+                final index = books.indexWhere(
+                  (element) => element == book,
+                );
+                return FavoriteItemListing(
+                  key: UniqueKey(),
+                  imageSrc: book.volumeInfo?.imageLinks?.thumbnail ?? "",
+                  subTitle: book.volumeInfo?.authors ?? "",
+                  title: book.volumeInfo?.title ?? "",
+                  onDismissed: (_) => deleteBook(index),
+                  onItemTap: () => goToDetails(book),
+                );
+              }).toList(),
+            );
           },
         ))
       ],
+    );
+  }
+
+  void deleteBook(int bookIndex) {
+    widget.controller.removeFavorite(bookIndex);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBarDefault.favoriteRemoved);
+  }
+
+  void goToDetails(BookModel item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BookDetailsView(
+          controller: DetailsController(),
+          book: item,
+        ),
+      ),
     );
   }
 }

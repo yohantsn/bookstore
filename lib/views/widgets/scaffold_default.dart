@@ -1,5 +1,5 @@
-import 'package:bookstore/tools/strings_util.dart';
-import 'package:bookstore/views/widgets/text_default.dart';
+import 'package:bookstore/tools/tools.dart';
+import 'package:bookstore/views/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ScaffoldDefault extends StatefulWidget {

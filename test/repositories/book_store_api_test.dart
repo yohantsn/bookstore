@@ -50,9 +50,7 @@ void main() {
           error: 400,
         ),
       );
-      final books = await bookStoreApi.getBooks(query: "test", index: 0);
-
-      expect(books, null);
+      expectLater(bookStoreApi.getBooks(query: "test", index: 0), throwsException);
     });
 
     test("when return success , but items is empty", () async {

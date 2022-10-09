@@ -5,40 +5,44 @@ import 'package:bookstore/data/persistence/book_store_persistence.dart';
 import 'package:bookstore/tools/injection.dart';
 import 'package:flutter/material.dart';
 
-class FavoritesController extends ChangeNotifier {
+abstract class IFavoritesController extends ChangeNotifier {
+  Future<void> getBooks();
+  void removeFavorite(int index);
+  List<BookModel> get listBooks;
+  bool get isLoading;
+}
+
+class FavoritesController extends ChangeNotifier implements IFavoritesController {
   final IBookStorePersistence _bookStorePersistence;
 
   FavoritesController({
     IBookStorePersistence? bookStorePersistence,
   }) : _bookStorePersistence = bookStorePersistence ?? Injection.instance.bookStorePersistence;
 
-  final listBooks = <BookModel>[];
-  bool isLoading = false;
-  bool isError = false;
+  @override
+  List<BookModel> get listBooks => _listBooks;
+  @override
+  bool get isLoading => _isLoading;
 
+  final _listBooks = <BookModel>[];
+  bool _isLoading = false;
+
+  @override
   Future<void> getBooks() async {
-    isLoading = true;
+    _isLoading = true;
     notifyListeners();
 
-    listBooks.clear();
+    _listBooks.clear();
     final books = _bookStorePersistence.read(key: "books") ?? "";
-    listBooks.addAll(_stringToBookModel(books));
-    isLoading = false;
+    _listBooks.addAll(_stringToBookModel(books));
+    _isLoading = false;
     notifyListeners();
   }
 
-  void setError() {
-    isLoading = false;
-    isError = true;
-
-    notifyListeners();
-  }
-
-  void removeFavorite(int index) {
-    final favoritesBooks = _stringToBookModel(_bookStorePersistence.read(key: "books") ?? "");
-    favoritesBooks.removeWhere((element) => listBooks[index] == element);
-    _bookStorePersistence.write(key: "books", data: _bookModelToString(favoritesBooks));
-    getBooks();
+  @override
+  void removeFavorite(int index) async {
+    _listBooks.removeAt(index);
+    _bookStorePersistence.write(key: "books", data: _bookModelToString(_listBooks)).then((value) => notifyListeners());
   }
 
   List<BookModel> _stringToBookModel(String strBooks) {

@@ -12,4 +12,11 @@ class StringUtil {
   static String get favoritesTitle => "Favorites";
 
   static String get detailsButtonBuy => "Buy";
+  static String get favoriteListEmpty => "You don't have anyone favorite!";
+  static String get favoritesSaveSuccess => "This book has been saved as a favorite!";
+  static String get favoritesRemoved => "This book has been removed from your favorites!";
+
+  static String get erroToOpenBuyLink => "Wasn't possible to open the link to buy the book!";
+  static String get erroToSearchBook =>
+      "Ooopps! \n There was an error with your connection. \n Please check your internet or your query and try again.";
 }

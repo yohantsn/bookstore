@@ -1,5 +1,4 @@
-import 'package:bookstore/views/widgets/image_network_default.dart';
-import 'package:bookstore/views/widgets/text_default.dart';
+import 'package:bookstore/views/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomeItemListing extends StatelessWidget {
@@ -9,8 +8,6 @@ class HomeItemListing extends StatelessWidget {
   final VoidCallback onFavoriteTap;
   final VoidCallback onItemTap;
 
-  final bool isFavorite;
-
   const HomeItemListing({
     Key? key,
     required this.imageSrc,
@@ -18,7 +15,6 @@ class HomeItemListing extends StatelessWidget {
     required this.title,
     required this.onFavoriteTap,
     required this.onItemTap,
-    this.isFavorite = false,
   }) : super(key: key);
 
   @override
@@ -29,12 +25,18 @@ class HomeItemListing extends StatelessWidget {
           onTap: onItemTap,
           child: Container(
             key: key,
-            constraints: const BoxConstraints(minHeight: 220.0, maxHeight: 230.0),
+            constraints: const BoxConstraints(
+              minHeight: 230.0,
+              maxHeight: 240.0,
+            ),
             width: 163.0,
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
-                ImageNetworkDefault(
-                  imageSrc: imageSrc,
+                Flexible(
+                  child: ImageNetworkDefault(
+                    imageSrc: imageSrc,
+                  ),
                 ),
                 Row(
                   children: [
@@ -71,9 +73,9 @@ class HomeItemListing extends StatelessWidget {
           right: 12,
           top: 0,
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.favorite,
-              color: isFavorite ? Colors.red : Colors.grey,
+              color: Colors.red,
               size: 26,
             ),
             onPressed: onFavoriteTap,

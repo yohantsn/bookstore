@@ -1,5 +1,5 @@
-import 'package:bookstore/tools/strings_util.dart';
-import 'package:bookstore/views/widgets/text_default.dart';
+import 'package:bookstore/tools/tools.dart';
+import 'package:bookstore/views/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,8 +15,9 @@ class HomeHeader extends StatelessWidget {
     final primaryColor = Theme.of(context).primaryColor;
 
     return Container(
+      key: key,
       margin: const EdgeInsets.fromLTRB(24.0, 56, 24.0, 20.0),
-      height: 181,
+      constraints: const BoxConstraints(maxHeight: 200, minHeight: 190),
       child: Card(
         color: primaryColor,
         shape: RoundedRectangleBorder(

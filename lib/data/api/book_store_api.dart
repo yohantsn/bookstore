@@ -31,9 +31,8 @@ class BookStoreApi implements IBookStoreApi {
       }
 
       return books;
-    } on Object catch (error) {
-      //Do Something
-      return null;
+    } on Object catch (_) {
+      rethrow;
     }
   }
 }
