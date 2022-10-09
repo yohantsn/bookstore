@@ -32,6 +32,8 @@ void main() {
 
       expect(books.length, 1);
       expect(books.first.volumeInfo!.title, "IEEE VLSI Test Symposium");
+      expect(homeController.query, query);
+      expect(homeController.currentPage, 0);
     });
 
     test("getBooks with exception", () async {

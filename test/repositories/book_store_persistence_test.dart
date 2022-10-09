@@ -13,6 +13,7 @@ void main() {
   final mockPrefs = MockPrefs();
   late IBookStorePersistence bookStorePersistence;
   const key = "books";
+  const data = "books";
   final value = jsonEncode(ExampleResponse.success["items"]);
 
   setUpAll(() {
@@ -39,6 +40,15 @@ void main() {
       final booksStr = bookStorePersistence.read(key: key);
 
       expect(booksStr, null);
+    });
+
+    test("setString when occur error", () async {
+      when(() => mockPrefs.setString(key, data)).thenThrow(Exception());
+      expectLater(bookStorePersistence.write(key: key, data: data), throwsException);
+    });
+    test("delete when occur error", () async {
+      when(() => mockPrefs.remove(key)).thenThrow(Exception());
+      expectLater(bookStorePersistence.delete(key: key), throwsException);
     });
   });
 }

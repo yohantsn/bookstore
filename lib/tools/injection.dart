@@ -32,7 +32,12 @@ class Injection {
     if (_cache["instance"] != null) {
       return _cache["instance"]!;
     } else {
-      throw (Exception("You must create an instance of this object!"));
+      throw (InjectionException("You must create an instance of this object!"));
     }
   }
+}
+
+class InjectionException implements Exception {
+  String cause;
+  InjectionException(this.cause);
 }
